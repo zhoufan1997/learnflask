@@ -12,14 +12,16 @@ from flask_migrate import Migrate,MigrateCommand
 from flask_mail import Mail
 from config import config
 from flask_login import  LoginManager
+from flask_pagedown import  PageDown
 
 bootstatp =Bootstrap()
 mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.session_protection = 'srtong'
-login_manager.login_view = 'auto.login'
+pagedown = PageDown()             #初始化Flask-PageDown
+login_manager.session_protection = 'srtong'     #提供不同的安全等级防止用户会话被篡改，可选参数有none|basic|srtong
+login_manager.login_view = 'auto.login'       #设置登录页面的端点
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -31,6 +33,7 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+    pagedown.init_app(app)
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
